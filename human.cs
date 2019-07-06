@@ -256,7 +256,7 @@ namespace gamejam {
             for (int i = 0; i < from.Count; i++)
             {
                 from[i].round(blue_nature_transfer, red_nature_transfer);
-                if (from[i].getFaith().getRangeType() != ThreeRangeValue.RangeType.HIGH)
+                if (from[i].getFaith().getRangeType() != type)
                 {
                     removed.Add(from[i]);
                 }
