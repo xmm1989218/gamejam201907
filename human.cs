@@ -271,19 +271,19 @@ namespace gamejam {
         // 每个一定时间需要调用一次 比如一秒调用一次 会触发自然转化
         public void round() {
             List<Person> replacement = new List<Person>();
-            roundPart(red_alive, replacement, ThreeRangeValue.RangeType.HIGH);
-            roundPart(red_alive, replacement, ThreeRangeValue.RangeType.LOW);
-            roundPart(red_alive, replacement, ThreeRangeValue.RangeType.MIDDLE);
+            red_alive = roundPart(red_alive, replacement, ThreeRangeValue.RangeType.HIGH);
+            blue_alive = roundPart(blue_alive, replacement, ThreeRangeValue.RangeType.LOW);
+            white_alive = roundPart(white_alive, replacement, ThreeRangeValue.RangeType.MIDDLE);
             for (int i = 0; i < replacement.Count; i++) {
                 switch(replacement[i].getFaith().getRangeType()) {
                     case ThreeRangeValue.RangeType.HIGH:
                         red_alive.Add(replacement[i]);
                         break;
                     case ThreeRangeValue.RangeType.LOW:
-                        red_alive.Add(replacement[i]);
+                        blue_alive.Add(replacement[i]);
                         break;
                     case ThreeRangeValue.RangeType.MIDDLE:
-                        red_alive.Add(replacement[i]);
+                        white_alive.Add(replacement[i]);
                         break;
                 }
             }
