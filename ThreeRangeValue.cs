@@ -69,6 +69,10 @@ namespace gamejam {
             this.current = this.max;
         }
 
+        public void setAsMiddle() {
+            this.current = (this.middle_min + this.middle_max) / 2;
+        }
+
         public int updateValue(int value) {
             int t = this.current + value;
             if (t > this.max) {

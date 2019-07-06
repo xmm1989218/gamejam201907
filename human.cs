@@ -19,7 +19,6 @@ namespace gamejam {
         public Human(int total, int no_faith) {
             int half = (total - no_faith) / 2;
             no_faith = total - 2 * half;
-            human = new List<Person>(total);
             blue_alive = new List<Person>(half);
             blue_dead = new List<Person>();
             red_alive = new List<Person>(half);
@@ -32,9 +31,8 @@ namespace gamejam {
                 var person = new Person();
                 person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(-25, 25)));
                 person.setBlood(new RangeValue(0, random.Next(1, 100), true));
-                person.setNature(new RangeValue(-10, 10, random.Next(0, 100)));
+                person.setStrong(random.Next(0, 100) >= 50 ? true : false);
                 person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
-                human.Add(person);
                 white_alive.Add(person);
             }
             for (int i = 0; i < half; i++)
@@ -42,9 +40,8 @@ namespace gamejam {
                 var person = new Person();
                 person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(-100, -25)));
                 person.setBlood(new RangeValue(0, random.Next(1, 100), true));
-                person.setNature(new RangeValue(-10, 10, random.Next(0, 100)));
+                person.setStrong(random.Next(0, 100) >= 50 ? true : false);
                 person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
-                human.Add(person);
                 blue_alive.Add(person);
             }
             for (int i = 0; i < half; i++)
@@ -52,9 +49,8 @@ namespace gamejam {
                 var person = new Person();
                 person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(25, 100)));
                 person.setBlood(new RangeValue(0, random.Next(1, 100), true));
-                person.setNature(new RangeValue(-10, 10, random.Next(0, 100)));
+                person.setStrong(random.Next(0, 100) >= 50 ? true : false);
                 person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
-                human.Add(person);
                 red_alive.Add(person);
             }
 
@@ -110,14 +106,71 @@ namespace gamejam {
             return result;
         }
 
-        public List<Person> selectByCount(int type, int count) {
-            // TODO(livexmm)
-            return null;
+        public List<Person> bornByCount(int type, int count) {
+            List<Person> group = new List<Person>();
+            if ((type & RED) != 0) {
+                var person = new Person();
+                person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(25, 100)));
+                person.setBlood(new RangeValue(0, random.Next(1, 100), true));
+                person.setStrong(random.Next(0, 100) >= 50 ? true : false);
+                person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
+                group.Add(person);
+            }
+            if ((type & BLUE) != 0) {
+                var person = new Person();
+                person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(-100, -25)));
+                person.setBlood(new RangeValue(0, random.Next(1, 100), true));
+                person.setStrong(random.Next(0, 100) >= 50 ? true : false);
+                person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
+                group.Add(person);
+            }
+            if ((type & WHITE) != 0) {
+                var person = new Person();
+                person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(-25, 25)));
+                person.setBlood(new RangeValue(0, random.Next(1, 100), true));
+                person.setStrong(random.Next(0, 100) >= 50 ? true : false);
+                person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
+                group.Add(person);
+            }
+            return group;
         }
 
-        public List<Person> selectByPercent(int type, int percent) {
-            // TODO(livexmm)
-            return null;
+        public List<Person> transferByCount(int from_type, int to_type, int count) {
+            List<Person> from = null;
+            List<Person> to = null;
+
+            if ((from_type & RED) != 0) {
+                from = red_alive;
+            } else if ((from_type & BLUE) != 0) {
+                from = blue_alive;
+            } else if ((from_type & WHITE) != 0) {
+                from = white_alive;
+            }
+
+            if ((to_type & RED) != 0) {
+                to = red_alive;
+            } else if ((from_type & BLUE) != 0) {
+                to = blue_alive;
+            } else if ((from_type & WHITE) != 0) {
+                to = white_alive;
+            }
+
+            List<Person> group = move(from, to, count);
+            for (int i = 0; i < group.Count; i++) {
+                if ((to_type & RED) != 0)
+                {
+                    group[i].getFaith().setAsMax();
+                }
+                else if ((to_type & BLUE) != 0)
+                {
+                    group[i].getFaith().setAsMin();
+                }
+                else
+                {
+                    group[i].getFaith().setAsMiddle();
+                }
+            }
+            return group;
         }
 
         public List<Person> killByCount(int type, int count) {
