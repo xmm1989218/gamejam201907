@@ -56,5 +56,22 @@ namespace gamejam {
             blood.updatePercent(percent_blood);
             return true;
         }
+
+        public void updateFaithByCount(int count) {
+            // TOOD(livexmm)
+        }
+
+        public void updateFaithByPercent(int percent) {
+            // TODO(livexmm)
+        }
+
+        // 每秒执行一次
+        public void round() {
+            if (faith.getValue() < 0) {
+                faith.updateValue(-1);
+            } else {
+                faith.updateValue(+1);
+            }
+        }
     }
 }
