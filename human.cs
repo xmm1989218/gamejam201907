@@ -31,12 +31,9 @@ namespace gamejam {
             { // white
                 var person = new Person();
                 person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(-25, 25)));
-                person.setNature(new RangeValue(0, 100, random.Next(0, 100)));
-                person.setMood(new RangeValue(-10, 10, random.Next(-100, 100)));
                 person.setBlood(new RangeValue(0, random.Next(1, 100), true));
-                person.setPhysical(new RangeValue(0, 10, random.Next(0, 100)));
-                person.setSpirit(new RangeValue(0, 10, random.Next(0, 100)));
-                person.setSensibility(new RangeValue(0, 100, random.Next(0, 100)));
+                person.setNature(new RangeValue(-10, 10, random.Next(0, 100)));
+                person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
                 human.Add(person);
                 white_alive.Add(person);
             }
@@ -44,12 +41,9 @@ namespace gamejam {
             { // blue
                 var person = new Person();
                 person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(-100, -25)));
-                person.setNature(new RangeValue(0, 100, random.Next(0, 100)));
-                person.setMood(new RangeValue(-10, 10, random.Next(-100, 100)));
                 person.setBlood(new RangeValue(0, random.Next(1, 100), true));
-                person.setPhysical(new RangeValue(0, 10, random.Next(0, 100)));
-                person.setSpirit(new RangeValue(0, 10, random.Next(0, 100)));
-                person.setSensibility(new RangeValue(0, 100, random.Next(0, 100)));
+                person.setNature(new RangeValue(-10, 10, random.Next(0, 100)));
+                person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
                 human.Add(person);
                 blue_alive.Add(person);
             }
@@ -57,12 +51,9 @@ namespace gamejam {
             { // red
                 var person = new Person();
                 person.setFaith(new ThreeRangeValue(-100, -25, 25, 100, random.Next(25, 100)));
-                person.setNature(new RangeValue(0, 100, random.Next(0, 100)));
-                person.setMood(new RangeValue(-10, 10, random.Next(-100, 100)));
                 person.setBlood(new RangeValue(0, random.Next(1, 100), true));
-                person.setPhysical(new RangeValue(0, 10, random.Next(0, 100)));
-                person.setSpirit(new RangeValue(0, 10, random.Next(0, 100)));
-                person.setSensibility(new RangeValue(0, 100, random.Next(0, 100)));
+                person.setNature(new RangeValue(-10, 10, random.Next(0, 100)));
+                person.setSensibility(new RangeValue(-10, 10, random.Next(0, 100)));
                 human.Add(person);
                 red_alive.Add(person);
             }
