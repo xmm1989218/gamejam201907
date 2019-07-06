@@ -90,11 +90,11 @@ namespace gamejam {
         }
 
         // 每秒执行一次
-        public void round() {
+        public void round(int n1, int n2) {
             if (faith.getValue() < 0) {
-                faith.updateValue(random.Next(0, 100) >= 50 ? -1 : 0);
+                faith.updateValue(random.Next(0, 100) >= 50 ? n1 : 0);
             } else {
-                faith.updateValue(random.Next(0, 100) >= 50 ? +1 : 0);
+                faith.updateValue(random.Next(0, 100) >= 50 ? n2 : 0);
             }
         }
     }

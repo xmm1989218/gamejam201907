@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace gamejam {
     public abstract class ICard
@@ -36,18 +37,20 @@ namespace gamejam {
             return span.Hours * 3600 + span.Minutes * 60 + span.Seconds;
         }
 
-        public void effect(Human human) {
+        public List<Person> effect(int type, Human human) {
+            List<Person> group = null;
             switch(this.level) {
-                case Level.V1: effectV1(human); break;
-                case Level.V2: effectV2(human); break;
-                case Level.V3: effectV3(human); break;
+                case Level.V1: group = effectV1(type, human); break;
+                case Level.V2: group = effectV2(type, human); break;
+                case Level.V3: group = effectV3(type, human); break;
             }
             this.start_time = DateTime.UtcNow;
             this.end_time = DateTime.UtcNow.AddSeconds(duration);
+            return group;
         }
 
-        abstract public void effectV1(Human human);
-        abstract public void effectV2(Human human);
-        abstract public void effectV3(Human human);
+        abstract public List<Person> effectV1(int type, Human human);
+        abstract public List<Person> effectV2(int type, Human human);
+        abstract public List<Person> effectV3(int type, Human human);
     }
 }

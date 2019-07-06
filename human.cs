@@ -16,6 +16,9 @@ namespace gamejam {
         private List<Person> white_alive = null;
         private List<Person> white_dead = null;
 
+        private int blue_nature_transfer = -1;
+        private int red_nature_transfer = +1;
+
         public Human(int total, int no_faith) {
             int half = (total - no_faith) / 2;
             no_faith = total - 2 * half;
@@ -67,6 +70,11 @@ namespace gamejam {
         public int getAliveWhite() { return white_alive.Count; }
         public int getDeadWhite() { return white_dead.Count; }
 
+        public int getBlueNatureTransfer() { return blue_nature_transfer; }
+        public void setBlueNatureTransfer(int n) { blue_nature_transfer = n; }
+        public int getRedNatureTransfer() { return red_nature_transfer; }
+        public void setRedNatureTransfer(int n) { red_nature_transfer = n; }
+
         private int getAliveCountByType(int type) {
             int max = 0;
             if ((type & RED) != 0) {
@@ -81,31 +89,7 @@ namespace gamejam {
             return max;
         }
 
-        private int getDeadCountByType(int type) {
-            int max = 0;
-            if ((type & RED) != 0) {
-                max = max + red_dead.Count;
-            }
-            if ((type & BLUE) != 0) {
-                max = max + blue_dead.Count;
-            }
-            if ((type & WHITE) != 0) {
-                max = max + white_dead.Count;
-            }
-            return max;
-        }
-
-        private List<Person> move(List<Person> a, List<Person> b, int count) {
-            count = a.Count > count ? count : a.Count;
-            List<Person> result = new List<Person>(count);
-            for (int i = 0; i < count; i++) {
-                b.Add(a[i]);
-                result.Add(a[i]);
-            }
-            a.RemoveRange(0, count);
-            return result;
-        }
-
+        // 按数量诞生 type  可以是RED|BLUE|WHITE的组合
         public List<Person> bornByCount(int type, int count) {
             List<Person> group = new List<Person>();
             if ((type & RED) != 0) {
@@ -135,6 +119,7 @@ namespace gamejam {
             return group;
         }
 
+        // 按数量转化 type RED|BLUE|WHITE  不可以组合
         public List<Person> transferByCount(int from_type, int to_type, int count) {
             List<Person> from = null;
             List<Person> to = null;
@@ -173,6 +158,7 @@ namespace gamejam {
             return group;
         }
 
+        // 按数量杀人 type  可以是RED|BLUE|WHITE的组合
         public List<Person> killByCount(int type, int count) {
             int max = getAliveCountByType(type);
             if (count >= max) count = max;
@@ -195,6 +181,7 @@ namespace gamejam {
             return result;
         }
 
+        // 按比例杀人 type  可以是RED|BLUE|WHITE的组合
         public List<Person> killByPercent(int type, int percent) {
             int max = getAliveCountByType(type);
             int count = max * percent / 100;
@@ -217,6 +204,7 @@ namespace gamejam {
             return result;
         }
 
+        // 按数量重生 type  可以是RED|BLUE|WHITE的组合
         public List<Person> reviveByCount(int type, int count, int percent_blood) {
             int max = getDeadCountByType(type);
             if (count >= max) count = max;
@@ -239,6 +227,7 @@ namespace gamejam {
             return result;
         }
 
+        // 按比例重生 type  可以是RED|BLUE|WHITE的组合
         public List<Person> reviveByPercent(int type, int percent, int percent_blood) {
             int max = getDeadCountByType(type);
             int count = max * percent / 100;
@@ -261,6 +250,45 @@ namespace gamejam {
             return result;
         }
 
+        private List<Person> roundPart(List<Person> from, List<Person> removed, ThreeRangeValue.RangeType type)
+        {
+            List<Person> remain = new List<Person>();
+            for (int i = 0; i < from.Count; i++)
+            {
+                from[i].round(blue_nature_transfer, red_nature_transfer);
+                if (from[i].getFaith().getRangeType() != ThreeRangeValue.RangeType.HIGH)
+                {
+                    removed.Add(from[i]);
+                }
+                else
+                {
+                    remain.Add(from[i]);
+                }
+            }
+            return remain;
+        }
+
+        // 每个一定时间需要调用一次 比如一秒调用一次 会触发自然转化
+        public void round() {
+            List<Person> replacement = new List<Person>();
+            roundPart(red_alive, replacement, ThreeRangeValue.RangeType.HIGH);
+            roundPart(red_alive, replacement, ThreeRangeValue.RangeType.LOW);
+            roundPart(red_alive, replacement, ThreeRangeValue.RangeType.MIDDLE);
+            for (int i = 0; i < replacement.Count; i++) {
+                switch(replacement[i].getFaith().getRangeType()) {
+                    case ThreeRangeValue.RangeType.HIGH:
+                        red_alive.Add(replacement[i]);
+                        break;
+                    case ThreeRangeValue.RangeType.LOW:
+                        red_alive.Add(replacement[i]);
+                        break;
+                    case ThreeRangeValue.RangeType.MIDDLE:
+                        red_alive.Add(replacement[i]);
+                        break;
+                }
+            }
+        }
+
         private void shuffleArray(List<Person> array) {
             for (int i = 0; i < array.Count; i++) { // shuffle
                 int index = random.Next(i, array.Count);                
@@ -269,5 +297,31 @@ namespace gamejam {
                 array[index] = t;
             } 
         }
+
+        private int getDeadCountByType(int type) {
+            int max = 0;
+            if ((type & RED) != 0) {
+                max = max + red_dead.Count;
+            }
+            if ((type & BLUE) != 0) {
+                max = max + blue_dead.Count;
+            }
+            if ((type & WHITE) != 0) {
+                max = max + white_dead.Count;
+            }
+            return max;
+        }
+
+        private List<Person> move(List<Person> a, List<Person> b, int count) {
+            count = a.Count > count ? count : a.Count;
+            List<Person> result = new List<Person>(count);
+            for (int i = 0; i < count; i++) {
+                b.Add(a[i]);
+                result.Add(a[i]);
+            }
+            a.RemoveRange(0, count);
+            return result;
+        }
+
     }
 }
