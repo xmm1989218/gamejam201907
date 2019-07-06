@@ -1,0 +1,11 @@
+D:\gamejam\bin\Debug\netcoreapp2.2\gamejam.deps.json
+D:\gamejam\bin\Debug\netcoreapp2.2\gamejam.runtimeconfig.json
+D:\gamejam\bin\Debug\netcoreapp2.2\gamejam.runtimeconfig.dev.json
+D:\gamejam\bin\Debug\netcoreapp2.2\gamejam.dll
+D:\gamejam\bin\Debug\netcoreapp2.2\gamejam.pdb
+D:\gamejam\obj\Debug\netcoreapp2.2\gamejam.csprojAssemblyReference.cache
+D:\gamejam\obj\Debug\netcoreapp2.2\gamejam.csproj.CoreCompileInputs.cache
+D:\gamejam\obj\Debug\netcoreapp2.2\gamejam.AssemblyInfoInputs.cache
+D:\gamejam\obj\Debug\netcoreapp2.2\gamejam.AssemblyInfo.cs
+D:\gamejam\obj\Debug\netcoreapp2.2\gamejam.dll
+D:\gamejam\obj\Debug\netcoreapp2.2\gamejam.pdb
